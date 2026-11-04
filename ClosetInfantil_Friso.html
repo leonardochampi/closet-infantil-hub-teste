@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Friso · Closet Infantil</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Closet Hub"/>
+<meta name="theme-color" content="#4A3524"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pa:#FAEFDA;--pa2:#F2E4C9;--wh:#FFFFFF;
+  --fe:#B5916B;--fe2:#D4B898;--ch:#4A3524;--ch2:#6B4F38;
+  --gn:#3B6D11;--gn2:#EAF0E8;--am:#B07D00;--am2:#FEF3C7;
+  --rd:#991B1B;--rd2:#FEE2E2;--bl:#1E40AF;--bl2:#DBEAFE;
+  --r:20px;--r-sm:12px;
+  --shadow:0 8px 24px rgba(74,53,36,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:var(--pa);color:var(--ch);min-height:100vh;padding-bottom:60px}
+body::before{content:"";position:fixed;width:420px;height:420px;background:radial-gradient(circle,var(--fe2) 0%,transparent 65%);top:-140px;right:-140px;border-radius:50%;z-index:0;opacity:.3;pointer-events:none}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+
+/* Header */
+header{background:var(--pa);border-bottom:1px solid var(--fe2);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(74,53,36,.06)}
+.logo-area{display:flex;align-items:center;gap:12px}
+.logo-img{height:40px;width:40px;object-fit:contain;border-radius:10px}
+header h1{font-family:'Fraunces',serif;font-size:18px;color:var(--ch)}
+.btn-back{font-size:12px;font-weight:500;color:var(--fe);background:none;border:1.5px solid var(--fe2);border-radius:20px;padding:6px 14px;cursor:pointer;text-decoration:none;font-family:'Poppins',sans-serif}
+#sync-indicator{font-size:11px;margin-left:8px}
+
+/* Cards */
+.card{background:var(--wh);border-radius:var(--r);box-shadow:var(--shadow);padding:24px;margin-top:20px;position:relative;z-index:1}
+.card-title{font-family:'Fraunces',serif;font-size:16px;color:var(--ch);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--pa2)}
+.section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--fe);margin-bottom:10px;margin-top:18px}
+
+/* Grid de inputs */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:600px){.grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
+
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:11px;font-weight:600;color:var(--ch2);text-transform:uppercase;letter-spacing:.04em}
+.field input,.field select{padding:9px 12px;border:1.5px solid var(--fe2);border-radius:var(--r-sm);font-family:'Poppins',sans-serif;font-size:13px;color:var(--ch);background:var(--wh);outline:none;transition:border-color .15s;width:100%}
+.field input:focus,.field select:focus{border-color:var(--fe)}
+.field input[readonly]{background:var(--pa);color:var(--ch2);border-color:var(--pa2);font-weight:600}
+.field input.destaque{background:var(--am2);border-color:var(--am);color:var(--am);font-weight:700;font-size:14px}
+.field input.positivo{background:var(--gn2);border-color:var(--gn);color:var(--gn);font-weight:700}
+
+/* Tabela grade */
+.grade-table{width:100%;border-collapse:collapse;margin-top:8px}
+.grade-table th{background:var(--pa2);color:var(--ch2);font-size:11px;font-weight:700;text-transform:uppercase;padding:8px 10px;text-align:center;border:1px solid var(--fe2)}
+.grade-table td{padding:7px 10px;border:1px solid var(--fe2);text-align:center;font-size:13px}
+.grade-table td input{border:none;background:transparent;width:60px;text-align:center;font-family:'Poppins',sans-serif;font-size:13px;color:var(--ch);outline:none;font-weight:500}
+.grade-table td input:focus{background:var(--pa);border-radius:6px}
+.grade-table .total-row{background:var(--pa);font-weight:700;color:var(--ch)}
+.grade-table .total-row td{border-top:2px solid var(--fe2)}
+
+/* Resultado final */
+.resultado-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+@media(max-width:500px){.resultado-grid{grid-template-columns:1fr}}
+.res-box{background:var(--pa);border-radius:var(--r-sm);padding:14px 16px;border:1.5px solid var(--fe2)}
+.res-box.destaque{background:var(--am2);border-color:var(--am)}
+.res-box.positivo{background:var(--gn2);border-color:var(--gn)}
+.res-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ch2);margin-bottom:4px}
+.res-box.destaque .res-label{color:var(--am)}
+.res-box.positivo .res-label{color:var(--gn)}
+.res-valor{font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:var(--ch)}
+.res-box.destaque .res-valor{color:var(--am)}
+.res-box.positivo .res-valor{color:var(--gn)}
+.res-sub{font-size:11px;color:var(--ch2);margin-top:2px}
+
+/* Divisor */
+.divider{height:1px;background:var(--pa2);margin:20px 0}
+
+/* Histórico */
+.hist-item{background:var(--pa);border-radius:var(--r-sm);padding:12px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border:1.5px solid transparent;transition:border-color .15s}
+.hist-item:hover{border-color:var(--fe2)}
+.hist-nome{font-weight:600;font-size:13px}
+.hist-meta{font-size:11px;color:var(--fe);margin-top:2px}
+.hist-acoes{display:flex;gap:6px;align-items:center}
+.btn-sm{font-size:11px;padding:5px 12px;border-radius:10px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;border:1.5px solid}
+.btn-primary{background:var(--ch);color:var(--pa);border-color:var(--ch)}
+.btn-ghost{background:transparent;color:var(--ch2);border-color:var(--fe2)}
+.btn-danger{background:transparent;color:var(--rd);border-color:var(--rd2)}
+
+.empty-state{text-align:center;padding:40px;color:var(--fe);font-style:italic;font-size:13px}
+</style>
+
+
+
+  <script>
+    // Fix iOS PWA
+    document.addEventListener('touchend', function(e){ const el=e.target; if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.tagName==='SELECT'){ e.preventDefault(); el.focus(); if(el.tagName!=='SELECT') el.click(); } },{passive:false});
+  </script>
+  <!-- Firebase Auth + Firestore -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    const _FC = {apiKey:"AIzaSyC1hZVFqCQ3F4fzJppiYWSveKdi3Ypf34I",authDomain:"closet-infantil-hub-teste.firebaseapp.com",projectId:"closet-infantil-hub-teste",storageBucket:"closet-infantil-hub-teste.firebasestorage.app",messagingSenderId:"937047573174",appId:"1:937047573174:web:f6751ad3ba3376206442aa"};
+    const _app = initializeApp(_FC);
+    window._auth = getAuth(_app);
+    window._db   = getFirestore(_app);
+    window.fsSet = async (key, value) => { await setDoc(doc(window._db,'hub',key),{data:JSON.stringify(value)}); };
+    window.fsGet = async (key) => { const s=await getDoc(doc(window._db,'hub',key)); if(!s.exists()) return null; try{ return JSON.parse(s.data().data); }catch(e){ return null; } };
+    window.fsListen = (key, cb) => onSnapshot(doc(window._db,'hub',key), s => { if(!s.exists()){ cb(null); return; } try{ cb(JSON.parse(s.data().data)); }catch(e){ cb(null); } });
+    window.fsLogout = () => signOut(window._auth).then(()=>window.location.href='login.html');
+    onAuthStateChanged(window._auth, user => {
+      if(!user){ window.location.href='login.html'; return; }
+      window._user = user;
+      const el = document.getElementById('user-email');
+      if(el) el.textContent = user.email;
+      if(typeof window._onFirebaseReady==='function') window._onFirebaseReady();
+    });
+  </script>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <a class="btn-back" href="ClosetInfantil_Hub.html">← Hub</a>
+    <span id="sync-indicator" style="font-size:11px;margin-left:4px"></span>
+  </div>
+  <h1>Calculadora de Friso</h1>
+  <div style="width:80px"></div>
+</header>
+
+<div class="wrap">
+
+  <!-- DADOS DO ROLO -->
+  <div class="card">
+    <div class="card-title">📦 Dados da Malha</div>
+    <div class="grid-3">
+      <div class="field">
+        <label>Redimento (m/kg)</label>
+        <input type="number" id="redimento" step="0.01" placeholder="ex: 2,78" oninput="calcular()"/>
+      </div>
+      <div class="field">
+        <label>Peso do Rolo (kg)</label>
+        <input type="number" id="peso-rolo" step="0.01" placeholder="ex: 20,00" oninput="calcular()"/>
+      </div>
+      <div class="field">
+        <label>Metragem do Rolo (m)</label>
+        <input type="number" id="metro-rolo" step="0.01" placeholder="calculado" readonly class="positivo"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- DADOS DO ENFESTO -->
+  <div class="card">
+    <div class="card-title">📐 Enfesto (Audaces)</div>
+    <div class="grid-4">
+      <div class="field">
+        <label>Metros do Encaixe/Enfesto</label>
+        <input type="number" id="metro-encaixe" step="0.001" placeholder="ex: 6,655" oninput="calcular()"/>
+      </div>
+      <div class="field">
+        <label>Folhas Encaixe</label>
+        <input type="number" id="folhas-encaixe" step="0.01" readonly class="positivo"/>
+      </div>
+      <div class="field">
+        <label>Qtd de Rolos</label>
+        <input type="number" id="qtd-rolos" value="1" min="1" oninput="calcular()"/>
+      </div>
+      <div class="field">
+        <label>Total de Folhas (Encaixe × Rolos)</label>
+        <input type="number" id="total-folhas-enfesto" step="0.01" readonly class="destaque"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORTE -->
+  <div class="card">
+    <div class="card-title">✂️ Corte</div>
+    <div class="grid-2">
+      <div class="field">
+        <label>Folhas p/ Cortar <span style="font-weight:400;opacity:.6">(qtd rolos × folhas encaixe, ou manual)</span></label>
+        <input type="number" id="folhas-corte" step="0.01" placeholder="automático ou manual" oninput="calcular()"/>
+      </div>
+      <div class="field">
+        <label>Total de Folhas no Corte</label>
+        <input type="number" id="total-folhas-corte" step="0.01" readonly class="positivo"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADE -->
+  <div class="card">
+    <div class="card-title">👕 Grade por Tamanho</div>
+    <div class="section-label">Quantidade por tamanho (peças por folha)</div>
+    <table class="grade-table">
+      <thead>
+        <tr><th>Tamanho</th><th>Grade</th><th>Total (Grade × Folhas Encaixe × Rolos)</th></tr>
+      </thead>
+      <tbody id="grade-body">
+        <tr><td>RN</td><td><input type="number" id="g-RN" value="0" min="0" oninput="calcular()"/></td><td id="t-RN">0</td></tr>
+        <tr><td>P</td><td><input type="number" id="g-P"  value="0" min="0" oninput="calcular()"/></td><td id="t-P">0</td></tr>
+        <tr><td>M</td><td><input type="number" id="g-M"  value="0" min="0" oninput="calcular()"/></td><td id="t-M">0</td></tr>
+        <tr><td>G</td><td><input type="number" id="g-G"  value="0" min="0" oninput="calcular()"/></td><td id="t-G">0</td></tr>
+        <tr><td>GG</td><td><input type="number" id="g-GG" value="0" min="0" oninput="calcular()"/></td><td id="t-GG">0</td></tr>
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td><strong>TOTAL</strong></td>
+          <td id="total-grade">0</td>
+          <td id="total-pcs">0</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- FRISO -->
+  <div class="card">
+    <div class="card-title">🧵 Cálculo de Friso</div>
+    <div class="section-label">Friso</div>
+    <div class="grid-4">
+      <div class="field">
+        <label>Folhas para Friso</label>
+        <input type="number" id="folhas-friso" step="0.01" readonly class="destaque"/>
+      </div>
+      <div class="field">
+        <label>Metros p/ Friso</label>
+        <input type="number" id="metros-friso" step="0.0001" readonly class="destaque"/>
+      </div>
+      <div class="field">
+        <label>Tranches de 2,5m</label>
+        <input type="number" id="tranches" step="0.00001" readonly class="destaque"/>
+      </div>
+      <div class="field">
+        <label>Rolinhos de Friso</label>
+        <input type="number" id="rolinhos" step="0.00001" readonly class="destaque"/>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">Capacidade do Friso</div>
+    <div class="grid-2">
+      <div class="field">
+        <label>Body p/ rolinho (grade completa)</label>
+        <input type="number" id="body-por-rolinho-grade" value="25" oninput="calcular()"/>
+      </div>
+      <div class="field">
+        <label>Body p/ rolinho (GG)</label>
+        <input type="number" id="body-por-rolinho-gg" value="22" oninput="calcular()"/>
+      </div>
+    </div>
+
+    <div class="resultado-grid" style="margin-top:16px">
+      <div class="res-box positivo">
+        <div class="res-label">Qtd aprox. Body (grade completa)</div>
+        <div class="res-valor" id="res-body-grade">—</div>
+        <div class="res-sub">rolinhos × <span id="res-sub-grade">25</span> body/rolinho</div>
+      </div>
+      <div class="res-box positivo">
+        <div class="res-label">Qtd aprox. Body (GG)</div>
+        <div class="res-valor" id="res-body-gg">—</div>
+        <div class="res-sub">rolinhos × <span id="res-sub-gg">22</span> body/rolinho</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTÓRICO -->
+  <div class="card">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>💾 Histórico de Cálculos</span>
+      <div style="display:flex;gap:8px">
+        <input type="text" id="nome-calculo" placeholder="Nome do lote..." style="padding:7px 12px;border:1.5px solid var(--fe2);border-radius:10px;font-family:'Poppins',sans-serif;font-size:12px;color:var(--ch);width:180px"/>
+        <button class="btn-sm btn-primary" onclick="salvarCalculo()">Salvar</button>
+      </div>
+    </div>
+    <div id="lista-historico"><div class="empty-state">Nenhum cálculo salvo ainda.</div></div>
+  </div>
+
+</div>
+
+<script>
+// ── FIREBASE SYNC LAYER ──────────────────────────────────────────────────────
+const _fsKeys = ['ci_terceirizados',
+  'ci_fechamentos','ci_custo_historico','ci_base_produtos','closet_friso_v3'];
+const _fsPendentes = {};
+let _fsReady = false;
+let _ultimoSave = {};
+function _lsGet(key, def) {
+  try{ const v=localStorage.getItem(key); return v?JSON.parse(v):def; }catch(e){ return def; }
+}
+function _lsSet(key, value) {
+  try{ localStorage.setItem(key, JSON.stringify(value)); }catch(e){ return; }
+  _ultimoSave[key] = Date.now();
+  if(!_fsKeys.includes(key)) return;
+  let safe; try{ safe=JSON.parse(JSON.stringify(value)); }catch(e){ return; }
+  if(_fsReady && window.fsSet){ _fsSend(key, safe, 0); }
+  else { _fsPendentes[key] = { value: safe, tentativas: 0 }; }
+}
+function _fsSend(key, value, t){
+  if(!window.fsSet) return;
+  _mostrarSync(true);
+  window.fsSet(key, value)
+    .then(()=>{ delete _fsPendentes[key]; _mostrarSync(false); })
+    .catch(e=>{
+      if(t<3){ setTimeout(()=>_fsSend(key,value,t+1),(t+1)*2000); }
+      else { _fsPendentes[key]={value,tentativas:t}; _mostrarSync(false,true); }
+    });
+}
+function _mostrarSync(ativo, erro){
+  const el=document.getElementById('sync-indicator');
+  if(!el) return;
+  if(ativo){ el.textContent='☁️ Salvando...'; el.style.color='var(--am)'; }
+  else if(erro){ el.textContent='⚠️ Erro'; el.style.color='var(--rd)'; }
+  else{ el.textContent='✅ Salvo'; el.style.color='var(--gn)'; setTimeout(()=>{ if(el) el.textContent=''; },2000); }
+}
+window._onFirebaseReady = function() {
+  if(_fsReady) return; _fsReady = true;
+  Object.entries(_fsPendentes).forEach(([key,{value}])=>_fsSend(key,value,0));
+  _fsKeys.forEach(key => {
+    window.fsListen(key, value => {
+      if(value===null) return;
+      if(Date.now()-(_ultimoSave[key]||0) < 3000) return;
+      try{ localStorage.setItem(key, JSON.stringify(value)); }catch(e){}
+      if(typeof window._onDataUpdate==='function') window._onDataUpdate(key);
+    });
+  });
+};
+// ─────────────────────────────────────────────────────────────────────────────
+
+const FRISO_KEY = 'closet_friso_v3';
+const TAMANHOS = ['RN','P','M','G','GG'];
+
+function n(id){ return parseFloat(document.getElementById(id).value)||0; }
+function set(id, val, decimais=2){ document.getElementById(id).value = val ? val.toFixed(decimais) : ''; }
+
+function calcular(){
+  const redimento    = n('redimento');
+  const pesoRolo     = n('peso-rolo');
+  const metroEncaixe = n('metro-encaixe');
+  const qtdRolos     = n('qtd-rolos') || 1;
+
+  // Metragem do rolo = redimento × peso
+  const metroRolo = redimento * pesoRolo;
+  set('metro-rolo', metroRolo);
+
+  // Folhas encaixe = metragem rolo ÷ metros encaixe
+  const folhasEncaixe = metroEncaixe > 0 ? metroRolo / metroEncaixe : 0;
+  set('folhas-encaixe', folhasEncaixe);
+
+  // Total de folhas enfesto = folhas encaixe × qtd rolos
+  const totalFolhasEnfesto = folhasEncaixe * qtdRolos;
+  set('total-folhas-enfesto', totalFolhasEnfesto);
+
+  // Folhas p/ cortar: se o usuário não digitou, usar total folhas enfesto
+  const folhasCorteInput = document.getElementById('folhas-corte').value;
+  const folhasCorte = folhasCorteInput !== '' ? parseFloat(folhasCorteInput)||0 : totalFolhasEnfesto;
+  if(folhasCorteInput === '') document.getElementById('folhas-corte').placeholder = totalFolhasEnfesto.toFixed(2);
+
+  // Total de folhas no corte = folhas p/ cortar (sem multiplicar rolos)
+  set('total-folhas-corte', folhasCorte);
+
+  // Grade — usar folhasCorte como base do total por tamanho
+  let totalGrade = 0;
+  TAMANHOS.forEach(t => {
+    const g = n('g-'+t);
+    totalGrade += g;
+    const total = g * folhasCorte;
+    document.getElementById('t-'+t).textContent = total % 1 === 0 ? total : total.toFixed(2);
+  });
+  document.getElementById('total-grade').textContent = totalGrade;
+  const totalPcs = totalGrade * folhasCorte;
+  document.getElementById('total-pcs').textContent = totalPcs % 1 === 0 ? totalPcs : totalPcs.toFixed(2);
+
+  // Folhas para friso = total folhas corte - folhas corte
+  // (o que sobra do rolo depois do corte)
+  const folhasFriso = metroEncaixe > 0 && folhasEncaixe > 0
+    ? (folhasEncaixe * qtdRolos) - folhasCorte
+    : 0;
+  set('folhas-friso', folhasFriso);
+
+  // Metros p/ friso = folhas friso × metros encaixe
+  const metrosFriso = folhasFriso * metroEncaixe;
+  set('metros-friso', metrosFriso, 4);
+
+  // Tranches de 2,5m = metros friso ÷ 2,5
+  const tranches = metrosFriso / 2.5;
+  set('tranches', tranches, 5);
+
+  // Rolinhos = tranches × 4
+  const rolinhos = tranches * 4;
+  set('rolinhos', rolinhos, 5);
+
+  // Body estimado
+  const bodyGrade = n('body-por-rolinho-grade');
+  const bodyGG    = n('body-por-rolinho-gg');
+  const resGrade  = rolinhos * bodyGrade;
+  const resGG     = rolinhos * bodyGG;
+
+  document.getElementById('res-body-grade').textContent = rolinhos > 0 ? Math.round(resGrade) : '—';
+  document.getElementById('res-body-gg').textContent    = rolinhos > 0 ? Math.round(resGG) : '—';
+  document.getElementById('res-sub-grade').textContent  = bodyGrade;
+  document.getElementById('res-sub-gg').textContent     = bodyGG;
+}
+
+// ── HISTÓRICO ────────────────────────────────────────────────────────────────
+function getHistorico(){ return _lsGet(FRISO_KEY, []); }
+function saveHistorico(h){ _lsSet(FRISO_KEY, h); }
+
+function salvarCalculo(){
+  const nome = document.getElementById('nome-calculo').value.trim();
+  if(!nome){ alert('Dê um nome para o cálculo antes de salvar.'); return; }
+  const hist = getHistorico();
+  hist.unshift({
+    id: Date.now().toString(36),
+    nome,
+    data: new Date().toISOString(),
+    dados: coletarDados(),
+  });
+  saveHistorico(hist);
+  document.getElementById('nome-calculo').value = '';
+  renderHistorico();
+}
+
+function coletarDados(){
+  return {
+    redimento:    n('redimento'),
+    pesoRolo:     n('peso-rolo'),
+    metroEncaixe: n('metro-encaixe'),
+    qtdRolos:     n('qtd-rolos'),
+    folhasCorte:  n('folhas-corte'),
+    grade: Object.fromEntries(TAMANHOS.map(t=>[t, n('g-'+t)])),
+    bodyGrade:    n('body-por-rolinho-grade'),
+    bodyGG:       n('body-por-rolinho-gg'),
+    // Resultados
+    metroRolo:    parseFloat(document.getElementById('metro-rolo').value)||0,
+    folhasEncaixe:parseFloat(document.getElementById('folhas-encaixe').value)||0,
+    rolinhos:     parseFloat(document.getElementById('rolinhos').value)||0,
+    resBodyGrade: document.getElementById('res-body-grade').textContent,
+    resBodyGG:    document.getElementById('res-body-gg').textContent,
+  };
+}
+
+function carregarCalculo(id){
+  const hist = getHistorico();
+  const item = hist.find(h=>h.id===id);
+  if(!item) return;
+  const d = item.dados;
+  document.getElementById('redimento').value     = d.redimento||'';
+  document.getElementById('peso-rolo').value     = d.pesoRolo||'';
+  document.getElementById('metro-encaixe').value = d.metroEncaixe||'';
+  document.getElementById('qtd-rolos').value     = d.qtdRolos||1;
+  document.getElementById('folhas-corte').value  = d.folhasCorte||'';
+  TAMANHOS.forEach(t=>{ document.getElementById('g-'+t).value = d.grade?.[t]||0; });
+  document.getElementById('body-por-rolinho-grade').value = d.bodyGrade||25;
+  document.getElementById('body-por-rolinho-gg').value    = d.bodyGG||22;
+  calcular();
+}
+
+function excluirCalculo(id){
+  if(!confirm('Excluir este cálculo?')) return;
+  const hist = getHistorico().filter(h=>h.id!==id);
+  saveHistorico(hist);
+  renderHistorico();
+}
+
+function renderHistorico(){
+  const hist = getHistorico();
+  const el = document.getElementById('lista-historico');
+  if(!hist.length){ el.innerHTML='<div class="empty-state">Nenhum cálculo salvo ainda.</div>'; return; }
+  el.innerHTML = hist.map(h=>{
+    const d = h.dados;
+    const data = new Date(h.data).toLocaleDateString('pt-BR');
+    return `<div class="hist-item">
+      <div onclick="carregarCalculo('${h.id}')" style="flex:1">
+        <div class="hist-nome">${h.nome}</div>
+        <div class="hist-meta">${data} · ${d.metroEncaixe||'?'}m encaixe · ${d.rolinhos?.toFixed(2)||'?'} rolinhos · ~${d.resBodyGrade||'?'} body</div>
+      </div>
+      <div class="hist-acoes">
+        <button class="btn-sm btn-ghost" onclick="carregarCalculo('${h.id}')">Carregar</button>
+        <button class="btn-sm btn-danger" onclick="excluirCalculo('${h.id}')">Excluir</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window._onDataUpdate = function(key){
+  if(key === FRISO_KEY) renderHistorico();
+};
+
+document.addEventListener('DOMContentLoaded', function(){
+  renderHistorico();
+});
+</script>
+
+
+</body>
+</html>
